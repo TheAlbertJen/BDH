@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Delaunay;
-using Delaunay.Geo;
 
 
 public class RandomWorldGenerator : MonoBehaviour
@@ -11,49 +9,35 @@ public class RandomWorldGenerator : MonoBehaviour
     public int mapSeed;
     public int mapHeight;
     public int mapWidth;
-    public int numSeeds = 4096;
 
     private int[] mapValues;
 
-    // seed points to start the map generation
-    private List<Vector2> seedPoints;
+    // height map values: ocean, coast, land, hills, mountains
+    private int[] heightMap;
+    
 
-    // status message for displaying to the screen
-    private string statusMessage;
-
-    void Start()
+    void Start ()
     {
-        UnityEngine.Random.seed = mapSeed;
+        Random.seed = mapSeed;
         mapValues = new int[mapWidth * mapHeight];
+        heightMap = new int[mapWidth * mapHeight];
 
-        seedPoints = new List<Vector2>(numSeeds);
-
-        statusMessage = "Creating a new world based on seed...";
-    }
+        // default world to ocean
+        for (int i = 0; i < heightMap.Length; i++)
+            heightMap[i] = -1;
+	}
 
     void Update()
     {
-
-    }
-
+	
+	}
 
     void CreateMap()
     {
-        // generate random points
-        for (int i = 0; i < seedPoints.Count; i++)
-        {
-            int rX = UnityEngine.Random.Range(0, mapWidth);
-            int rY = UnityEngine.Random.Range(0, mapHeight);
+        // create seed islands
 
-            seedPoints[i] = new Vector2(rX, rY);
-        }
-
-        // generate voronoi using fortune's algorithm
-
+        // 
     }
-
-
-
 
 
     void WriteToFile()
