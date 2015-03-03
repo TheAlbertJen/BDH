@@ -1,63 +1,69 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Delaunay;
-using Delaunay.Geo;
 
+using System.IO;
 
-public class RandomWorldGenerator : MonoBehaviour
+namespace Assets.Scripts.MapGeneration
 {
 
-    public int mapSeed;
-    public int mapHeight;
-    public int mapWidth;
-    public int numSeeds = 4096;
 
-    private int[] mapValues;
-
-    // seed points to start the map generation
-    private List<Vector2> seedPoints;
-
-    // status message for displaying to the screen
-    private string statusMessage;
-
-    void Start()
-    {
-        UnityEngine.Random.seed = mapSeed;
-        mapValues = new int[mapWidth * mapHeight];
-
-        seedPoints = new List<Vector2>(numSeeds);
-
-        statusMessage = "Creating a new world based on seed...";
-    }
-
-    void Update()
+    public class RandomWorldGenerator : MonoBehaviour
     {
 
-    }
+        public int mapSeed;
+        public int mapHeight;
+        public int mapWidth;
+        public int numSeeds = 4096;
 
+        private VoronoiDiagram vd;
 
-    void CreateMap()
-    {
-        // generate random points
-        for (int i = 0; i < seedPoints.Count; i++)
+        // seed points to start the map generation
+        private List<Vector2> seedPoints;
+
+        // status message for displaying to the screen
+        private string statusMessage;
+
+        void Start()
         {
-            int rX = UnityEngine.Random.Range(0, mapWidth);
-            int rY = UnityEngine.Random.Range(0, mapHeight);
+            UnityEngine.Random.seed = mapSeed;
 
-            seedPoints[i] = new Vector2(rX, rY);
+            seedPoints = new List<Vector2>(numSeeds);
+
+            statusMessage = "Creating a new world based on seed...";
         }
 
-        // generate voronoi using fortune's algorithm
+        void CreateMap()
+        {
+            List<uint> colors = new List<uint>();
+            // generate random points
+            for (int i = 0; i < seedPoints.Count; i++)
+            {
+                colors.Add(0);
+                int rX = UnityEngine.Random.Range(0, mapWidth);
+                int rY = UnityEngine.Random.Range(0, mapHeight);
 
-    }
+                seedPoints[i] = new Vector2(rX, rY);
+            }
 
+            // generate voronoi diagram
+            vd = new VoronoiDiagram(seedPoints, mapWidth, mapHeight);
+            vd.LloydRelaxation(2);
+        }
 
+        public void LoadFromFile()
+        {
 
+        }
 
+        public void SaveToFile()
+        {
+            // save the generated map to a file
+        }
 
-    void WriteToFile()
-    {
-        // save the generated map to a file
+        public void SaveToImageFile()
+        {
+            // save the generated map to an image
+        }
     }
 }
