@@ -22,7 +22,7 @@ namespace Assets.Scripts.MapGeneration
         private List<Vector2> seedPoints;
 
         // status message for displaying to the screen
-        private string statusMessage;
+        public string statusMessage;
 
         void Start()
         {
@@ -36,6 +36,7 @@ namespace Assets.Scripts.MapGeneration
         void CreateMap()
         {
             List<uint> colors = new List<uint>();
+            statusMessage = "Generating seed points...";
             // generate random points
             for (int i = 0; i < seedPoints.Count; i++)
             {
@@ -47,7 +48,9 @@ namespace Assets.Scripts.MapGeneration
             }
 
             // generate voronoi diagram
+            statusMessage = "Creating Voronoi diagram based of seeds...";
             vd = new VoronoiDiagram(seedPoints, mapWidth, mapHeight);
+            statusMessage = "Relaxing seed points...";
             vd.LloydRelaxation(2);
         }
 
