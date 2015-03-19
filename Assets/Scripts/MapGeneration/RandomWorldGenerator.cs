@@ -14,7 +14,7 @@ namespace Assets.Scripts.MapGeneration
         public int mapSeed;
         public int mapHeight;
         public int mapWidth;
-        public int numSeeds = 4096;
+        public int numSeeds;
 
         private VoronoiDiagram vd;
 
@@ -24,16 +24,23 @@ namespace Assets.Scripts.MapGeneration
         // status message for displaying to the screen
         public string statusMessage;
 
-        void Start()
+        public void InitWorldGenerator(int width, int height, int seedCount = 0)
         {
+            mapWidth = width;
+            mapHeight = height;
+            if (seedCount != 0)
+                numSeeds = seedCount;
+            else
+                numSeeds = mapHeight * mapWidth / 10;
+
             UnityEngine.Random.seed = mapSeed;
 
             seedPoints = new List<Vector2>(numSeeds);
-
             statusMessage = "Creating a new world based on seed...";
+
         }
 
-        void CreateMap()
+        public void CreateMap()
         {
             List<uint> colors = new List<uint>();
             statusMessage = "Generating seed points...";
